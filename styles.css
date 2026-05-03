@@ -233,3 +233,30 @@ body {
     30% { transform: scale(1); }
     45% { transform: scale(1.15); }
     60
+/* --- SOLUCIÓN DE VISIBILIDAD --- */
+
+/* Asegura que el contenido principal esté siempre encima del canvas */
+#content {
+    position: relative;
+    z-index: 10 !important; /* ¡Importante! Encima del canvas (-1) */
+    display: none; /* Oculto por defecto, el JS lo activará */
+}
+
+/* Cuando la clase 'hidden' se quita, debe mostrar */
+#content:not(.hidden) {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Asegura que las secciones dentro del contenido también sean visibles */
+#content section, #content header, #content footer {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Corrección para que el canvas no tape los clics */
+#canvas {
+    pointer-events: auto; /* Permite interacción si es necesario, pero no bloquea el contenido */
+    z-index: -1;
+}
