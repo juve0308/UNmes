@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Sarah Valentina | Nuestro Jardín</title>
+    <!-- Fuentes Elegantes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Capa de Audio (Invisible pero funcional) -->
+    <audio id="bg-music" loop>
+        <source src="audio/cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Pantalla de Inicio (Botón elegante) -->
+    <div id="start-overlay">
+        <div class="glass-card start-card">
+            <h1 class="title-anim">Sarah Valentina</h1>
+            <p>Un mes de risas, juegos y un amor que crece.</p>
+            <button id="enter-btn">Entrar al Jardín</button>
+        </div>
+    </div>
+
+    <!-- Fondo Dinámico (Canvas para las flores) -->
+    <canvas id="canvas"></canvas>
+
+    <!-- Contenido Principal -->
+    <div id="content" class="hidden">
+        
+        <!-- Sección Hero: Conexión -->
+        <header class="hero-section">
+            <div class="connection-wrapper">
+                <div class="photo-frame">
+                    <img src="img/tu_foto.jpg" alt="Jenier">
+                    <span>Tú</span>
+                </div>
+                <div class="heart-beat-container">
+                    <div class="heart">❤️</div>
+                    <div class="pulse-ring"></div>
+                </div>
+                <div class="photo-frame">
+                    <img src="img/sarah_foto.jpg" alt="Sarah">
+                    <span>Ella</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sección Carta -->
+        <section class="glass-card letter-section">
+            <h2>Nuestra Historia</h2>
+            <p class="letter-content">
+                Todo comenzó en <strong>Free Fire</strong> en la isla de entrenamiento para ser exactos.
+                Nunca imaginé que unas partidas casuales se convertirían en el amor de mi vida. 
+                Me enamoré de ti a través de una pantalla, Sarah. Eres eso que no sabia que iba a llegar pero que necesitaba en mí vida 
+                <br><br>
+                Recuerdo esas desveladas hablando de cosas random, enviándonos videos de todo tipo, riendo y reflexionando de cada cosa que nos
+              pasaba en el dia a dia. Me fuí enamorando poco a poco de tí, de tú manera de ser, de ese corazon tan lindo y porque siempre me
+              demostraste ser una persona auténtica y única. No te quiero perder mi cielo, te quiero siempre en mí vida. 
+                Aunque la distancia nos separa, cada palabra tuya ha ganado mi corazón. 
+                <br><br>
+                Tengo muchas ganas de conocerte, tocarte, besarte y mirarte a los ojos. 
+                Te amo con todo mi corazón. Este jardín es solo un reflejo de lo que siento por ti.
+            </p>
+        </section>
+
+        <!-- Sección Galería de Recuerdos -->
+        <section class="gallery-section">
+            <h2>Momentos Inolvidables</h2>
+            <div class="grid-gallery">
+                <div class="glass-card photo-item">
+                    <img src="img/juego1.jpg" alt="Juego 1">
+                    <p>Te Amo mi cachetonaa!</p>
+                </div>
+                <div class="glass-card photo-item">
+                    <img src="img/juego2.jpg" alt="Juego 2">
+                    <p>Eres mí todooo!</p>
+                </div>
+                <div class="glass-card photo-item">
+                    <img src="img/juntos.jpg" alt="Juntos">
+                    <p>Dios, TÚ Y YO</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Hecho con todo mi amor por <strong>Jenier Gereda</strong></p>
+            <p>4 de Mayo, 2026</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
