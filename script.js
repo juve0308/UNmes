@@ -1,184 +1,49 @@
 /**
- * Script Principal para "El Jardín de Sarah Valentina"
+ * Script Principal - "El Jardín de Sarah Valentina"
  * Jenier Gereda - 2026
  */
 
 document.addEventListener("DOMContentLoaded", function() {
     console.log("✅ Script cargado correctamente.");
 
-    // Referencias a elementos del DOM
+    // Referencias a elementos
     const btn = document.getElementById("enter-btn");
     const overlay = document.getElementById("start-overlay");
     const content = document.getElementById("content");
     const canvas = document.getElementById("canvas");
     const audio = document.getElementById("bg-music");
 
-    // Validación de elementos críticos
+    // Validación de seguridad
     if (!btn) {
-        console.error("❌ ERROR CRÍTICO: No se encontró el botón con ID 'enter-btn'.");
-        alert("Error: No se pudo cargar el botón de inicio. Por favor, recarga la página.");
+        console.error("❌ ERROR: No se encontró el botón 'enter-btn'. Revisa tu HTML.");
         return;
     }
 
-    if (!overlay || !content) {
-        console.error("❌ ERROR CRÍTICO: Falta el contenedor de bienvenida o el contenido principal.");
-        return;
-    }
+    console.log("✅ Elementos listos. Esperando clic...");
 
-    console.log("✅ Elementos encontrados. Esperando interacción...");
-
-    // --- EVENTO DEL BOTÓN (VERSIÓN CORREGIDA) ---
+    // --- EVENTO DEL BOTÓN ---
     btn.addEventListener("click", function(e) {
         e.preventDefault();
-        console.log("👆 ¡Clic detectado! Iniciando secuencia...");
+        console.log("👆 Clic detectado. Iniciando experiencia...");
 
-        // 1. Reproducir Audio (Intento 1 y 2 si falla)
+        // 1. Reproducir Audio
         if (audio) {
-            audio.volume = 0.6;
+            audio.volume = 0.6; // Volumen al 60%
             audio.play().then(() => {
-                console.log("🎵 Música iniciada.");
+                console.log("🎵 Música reproduciéndose correctamente.");
             }).catch(error => {
                 console.error("⚠️ Error al reproducir audio:", error);
-                // Fallback: Intentar reproducir de nuevo al hacer clic en cualquier parte
-                document.body.addEventListener('click', function tryAgain() {
-                    audio.play().catch(err => console.log("Audio bloqueado aún"));
-                    document.body.removeEventListener('click', tryAgain);
+                alert("Nota: El navegador bloqueó la música. Toca cualquier parte de la pantalla para activarla.");
+                // Intentar activar audio con el primer clic en el cuerpo
+                document.body.addEventListener('click', function activateAudio() {
+                    audio.play().catch(err => console.log("Audio aún bloqueado"));
+                    document.body.removeEventListener('click', activateAudio);
                 }, { once: true });
             });
+        } else {
+            console.warn("⚠️ No se encontró el elemento de audio en el HTML.");
         }
 
-        // 2. Desvanecer Overlay
+        // 2. Ocultar pantalla de bienvenida
         overlay.style.transition = "opacity 0.8s ease";
         overlay.style.opacity = "0";
-        overlay.style.pointerEvents = "none";
-
-        // 3. MOSTRAR CONTENIDO (Forzado)
-        setTimeout(() => {
-            overlay.style.display = "none";
-            
-            // FORZAR VISIBILIDAD
-            content.classList.remove("hidden");
-            content.style.display = "block";
-            content.style.opacity = "1";
-            content.style.visibility = "visible";
-            
-            console.log("✅ Contenido forzado a visible.");
-            console.log("Estado de la clase 'hidden':", content.classList.contains("hidden"));
-
-            // Iniciar flores
-            if (canvas) {
-                initFlowerSystem();
-                console.log("🌸 Flores iniciadas.");
-            }
-        }, 800); // Espera 0.8s para que termine la transición de opacidad
-    });
-
-    // --- SISTEMA DE FLORES (CANVAS) ---
-    function initFlowerSystem() {
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let width, height;
-
-        // Ajustar tamaño del canvas
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        
-        window.addEventListener('resize', resize);
-        resize();
-
-        // Clase para las partículas (flores)
-        class FlowerParticle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 12 + 5; // Tamaño entre 5 y 17
-                this.speedX = Math.random() * 2 - 1; // Velocidad horizontal aleatoria
-                this.speedY = Math.random() * 2 - 1; // Velocidad vertical aleatoria
-                this.color = `hsl(${Math.random() * 60 + 330}, 80%, 70%)`; // Tonos rosados/rojos
-                this.life = 100; // Vida de la partícula (100%)
-                this.angle = Math.random() * Math.PI * 2;
-                this.petalCount = Math.floor(Math.random() * 4) + 3; // 3 a 7 pétalos
-                this.rotationSpeed = (Math.random() - 0.5) * 0.05;
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY - 0.2; // Flotan lentamente hacia arriba
-                this.life -= 0.6; // Pierden vida
-                this.angle += this.rotationSpeed;
-            }
-
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle);
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.life / 100;
-
-                // Dibujar pétalos
-                for (let i = 0; i < this.petalCount; i++) {
-                    ctx.rotate((Math.PI * 2) / this.petalCount);
-                    ctx.beginPath();
-                    ctx.ellipse(0, this.size / 2, this.size / 4, this.size / 2, 0, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-                
-                // Centro de la flor
-                ctx.beginPath();
-                ctx.arc(0, 0, this.size / 5, 0, Math.PI * 2);
-                ctx.fillStyle = '#fff';
-                ctx.fill();
-
-                ctx.restore();
-            }
-        }
-
-        // Manejo del mouse y touch
-        let mouse = { x: null, y: null };
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-            // Crear 2 flores por movimiento de mouse
-            for (let i = 0; i < 2; i++) {
-                particles.push(new FlowerParticle(mouse.x, mouse.y));
-            }
-        });
-
-        window.addEventListener('touchmove', (e) => {
-            mouse.x = e.touches.clientX;
-            mouse.y = e.touches.clientY;
-            for (let i = 0; i < 2; i++) {
-                particles.push(new FlowerParticle(mouse.x, mouse.y));
-            }
-        });
-
-        // Bucle de animación
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-
-            // Generar flores automáticamente desde abajo si no hay movimiento
-            if (Math.random() < 0.15) {
-                particles.push(new FlowerParticle(Math.random() * width, height + 10));
-            }
-
-            // Actualizar y dibujar cada partícula
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                // Eliminar partículas muertas
-                if (particles[i].life <= 0) {
-                    particles.splice(i, 1);
-                    i--;
-                }
-            }
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-    }
-});
