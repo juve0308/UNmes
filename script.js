@@ -27,41 +27,48 @@ document.addEventListener("DOMContentLoaded", function() {
 
     console.log("✅ Elementos encontrados. Esperando interacción...");
 
-    // --- EVENTO DEL BOTÓN ---
+    // --- EVENTO DEL BOTÓN (VERSIÓN CORREGIDA) ---
     btn.addEventListener("click", function(e) {
-        e.preventDefault(); // Evita comportamientos por defecto
-        console.log("👆 ¡Clic detectado en 'Entrar al Jardín'!");
+        e.preventDefault();
+        console.log("👆 ¡Clic detectado! Iniciando secuencia...");
 
-        // 1. Reproducir Audio
+        // 1. Reproducir Audio (Intento 1 y 2 si falla)
         if (audio) {
-            audio.volume = 0.6; // Volumen al 60%
+            audio.volume = 0.6;
             audio.play().then(() => {
-                console.log("🎵 Música reproduciéndose correctamente.");
+                console.log("🎵 Música iniciada.");
             }).catch(error => {
-                console.warn("⚠️ El navegador bloqueó el audio automático.", error);
-                // Intento de fallback: mostrar mensaje si falla
-                setTimeout(() => {
-                    alert("¡Bienvenida al jardín, Sarah! (Nota: Si no escuchas música, toca la pantalla en cualquier lugar).");
-                }, 500);
+                console.error("⚠️ Error al reproducir audio:", error);
+                // Fallback: Intentar reproducir de nuevo al hacer clic en cualquier parte
+                document.body.addEventListener('click', function tryAgain() {
+                    audio.play().catch(err => console.log("Audio bloqueado aún"));
+                    document.body.removeEventListener('click', tryAgain);
+                }, { once: true });
             });
-        } else {
-            console.warn("⚠️ No se encontró el elemento de audio.");
         }
 
-        // 2. Transición de Pantalla
-        overlay.style.transition = "opacity 1s ease";
+        // 2. Desvanecer Overlay
+        overlay.style.transition = "opacity 0.8s ease";
         overlay.style.opacity = "0";
-        overlay.style.pointerEvents = "none"; // Bloquea clics mientras se desvanece
+        overlay.style.pointerEvents = "none";
 
-        // 3. Mostrar Contenido e Iniciar Animación
+        // 3. MOSTRAR CONTENIDO (Forzado)
         setTimeout(() => {
             overlay.style.display = "none";
-            content.style.display = "block"; // Asegura que se muestre
             
-            // Iniciar el sistema de partículas (flores)
+            // FORZAR VISIBILIDAD
+            content.classList.remove("hidden");
+            content.style.display = "block";
+            content.style.opacity = "1";
+            content.style.visibility = "visible";
+            
+            console.log("✅ Contenido forzado a visible.");
+            console.log("Estado de la clase 'hidden':", content.classList.contains("hidden"));
+
+            // Iniciar flores
             if (canvas) {
                 initFlowerSystem();
-                console.log("🌸 Sistema de flores iniciado.");
+                console.log("🌸 Flores iniciadas.");
             }
         }, 800); // Espera 0.8s para que termine la transición de opacidad
     });
